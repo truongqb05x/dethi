@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xem Đề Thi Kết Thúc Học Phần</title>
+  <style>
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background: #f8f8f8;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"]:focus, select:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-align: center;
+    }
+
+    .button:hover {
+      background-color: #0056b3;
+    }
+
+    .exam-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .exam-item {
+      background: #fff;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .exam-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .exam-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .exam-info {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    .exam-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .exam-meta i {
+      margin-right: 5px;
+      color: #999;
+    }
+
+    .action-buttons a {
+      text-decoration: none;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      font-size: 14px;
+      margin-right: 10px;
+      display: inline-block;
+    }
+
+    .action-buttons a.view-img {
+      background-color: #28a745;
+    }
+
+    .action-buttons a.view-pdf {
+      background-color: #17a2b8;
+    }
+
+    .action-buttons a:hover {
+      opacity: 0.9;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #f1f1f1;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #555;
+    }
+    .action-buttons button.bookmark {
+  background-color: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.action-buttons button.bookmark:hover {
+  background-color: #e84118;
+}
+.rating {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 18px;
+  color: #f39c12;
+  cursor: pointer;
+}
+
+.rating span {
+  margin-right: 5px;
+}
+
+.rating span:hover,
+.rating span:hover ~ span {
+  color: #f1c40f;
+}
+
+.average-rating {
+  font-size: 14px;
+  margin-left: 10px;
+  color: #555;
+}
+
+.share-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.share-btn:hover {
+  background-color: #0056b3;
+}
+.detail-btn {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.detail-btn:hover {
+  background-color: #138496;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: red;
+}
+.quiz-btn {
+  background-color: #ffc107;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.quiz-btn:hover {
+  background-color: #e0a800;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: red;
+}
+
+.loading-spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: red;
+}
+.exam-slogan {
+  font-size: 12px;
+  color: #6c757d;
+  text-align: center;
+  margin-top: 10px;
+  padding: 5px 0;
+  border-top: 1px solid #e9ecef;
+}
+
+
+
+  </style>
+</head>
+<body>
+
+  <header>Xem Đề Thi Kết Thúc Học Phần</header>
+
+  <div class="container">
+    <!-- Thanh tìm kiếm -->
+    
+
+    <!-- Form chọn trường -->
+    <div class="form-group">
+      <label for="school">Chọn trường:</label>
+      <select id="school" name="school" onchange="filterExams()">
+        <option value="">-- Tất cả trường --</option>
+        <option value="Trường Đại học A">Trường Đại học A</option>
+        <option value="Trường Đại học B">Trường Đại học B</option>
+      </select>
+    </div>
+
+    <!-- Form chọn khoa -->
+    <div class="form-group">
+      <label for="faculty">Chọn khoa:</label>
+      <select id="faculty" name="faculty" onchange="filterExams()">
+        <option value="">-- Tất cả khoa --</option>
+        <option value="Khoa Công Nghệ Thông Tin">Khoa Công Nghệ Thông Tin</option>
+        <option value="Khoa Kinh Tế">Khoa Kinh Tế</option>
+      </select>
+    </div>
+
+    <!-- Form chọn năm -->
+    <div class="form-group">
+      <label for="year">Chọn năm:</label>
+      <select id="year" name="year" onchange="filterExams()">
+        <option value="">-- Tất cả năm --</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+        <option value="2021">2021</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="search">Tìm kiếm theo tên đề:</label>
+        <input type="text" id="search" placeholder="Nhập tên đề thi..." oninput="filterExams()">
+      </div>
+      <div id="savedExamsModal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <span class="close-btn" onclick="closeSavedExamsModal()">&times;</span>
+          <h2>Danh Sách Đề Thi Đã Lưu</h2>
+          <div id="savedExamsList">
+            <!-- Danh sách đề thi đã lưu sẽ được tải vào đây -->
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="form-group">
+        <button class="button" onclick="showSavedExams()">Xem Đề Thi Đã Lưu</button>
+      </div>
+    <!-- Danh sách đề thi -->
+    <div class="exam-list" id="exam-list">
+      <!-- Nội dung sẽ được tải động -->
+    </div>
+  </div>
+
+<!-- Modal cho chi tiết đề thi -->
+<div id="detailModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeDetailModal()">&times;</span>
+      <div id="modalContent">
+        <!-- Nội dung chi tiết đề thi -->
+      </div>
+    </div>
+  </div>
+  <footer>
+    &copy; 2024 Đề thi học phần - Thiết kế bởi nhóm hỗ trợ giáo dục.
+  </footer>
+
+  <script>
+    // Dữ liệu giả lập
+    const exams = [
+      {
+        id: 1,
+        title: "Đề thi môn Toán Cao Cấp",
+        school: "Trường Đại học A",
+        faculty: "Khoa Công Nghệ Thông Tin",
+        year: 2023,
+        views: 134,
+        imageUrl: "image1.jpg",
+        pdfUrl: "exam1.pdf"
+      },
+      {
+        id: 2,
+        title: "Đề thi môn Lập Trình C",
+        school: "Trường Đại học A",
+        faculty: "Khoa Công Nghệ Thông Tin",
+        year: 2022,
+        views: 89,
+        imageUrl: "image2.jpg",
+        pdfUrl: "exam2.pdf"
+      },
+      {
+        id: 3,
+        title: "Đề thi môn Kinh Tế Vi Mô",
+        school: "Trường Đại học B",
+        faculty: "Khoa Kinh Tế",
+        year: 2021,
+        views: 205,
+        imageUrl: "image3.jpg",
+        pdfUrl: "exam3.pdf"
+      }
+    ];
+    function showExamDetails(id) {
+  const exam = exams.find((e) => e.id === id);
+  if (!exam) return;
+
+  const modalContent = document.getElementById("modalContent");
+  modalContent.innerHTML = `
+    <h2>${exam.title}</h2>
+    <p><strong>Trường:</strong> ${exam.school}</p>
+    <p><strong>Khoa:</strong> ${exam.faculty}</p>
+    <p><strong>Năm:</strong> ${exam.year}</p>
+    <p><strong>Lượt xem:</strong> ${exam.views}</p>
+    <p><strong>Mô tả:</strong> Đề thi bao gồm 50 câu hỏi trắc nghiệm và 2 câu tự luận, thời gian làm bài 90 phút.</p>
+  `;
+
+  const detailModal = document.getElementById("detailModal");
+  detailModal.style.display = "flex"; // Hiển thị modal
+}
+
+function closeDetailModal() {
+  const detailModal = document.getElementById("detailModal");
+  detailModal.style.display = "none"; // Ẩn modal
+}
+
+
+function closeModal() {
+  const modal = document.querySelector(".modal");
+  if (modal) {
+    modal.remove();
+  }
+}
+function analyzeFileWithAI(file) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(`AI đã phân tích thành công file "${file.name}" và kết luận: Đáp án đúng là A, B, C.`);
+    }, 3000);
+  });
+}
+function closeModal() {
+  const modal = document.querySelector(".modal");
+  if (modal) {
+    modal.remove();
+  }
+}
+function showSavedExams() {
+  const savedExamsList = document.getElementById("savedExamsList");
+  const modal = document.getElementById("savedExamsModal");
+
+  // Xóa nội dung cũ
+  savedExamsList.innerHTML = "";
+
+  if (bookmarks.length === 0) {
+    savedExamsList.innerHTML = "<p>Không có đề thi nào được lưu!</p>";
+  } else {
+    bookmarks.forEach((exam) => {
+      const examItem = document.createElement("div");
+      examItem.classList.add("exam-item");
+
+      examItem.innerHTML = `
+        <div class="exam-title">${exam.title}</div>
+        <div class="exam-info">
+          <strong>Trường:</strong> ${exam.school}<br>
+          <strong>Khoa:</strong> ${exam.faculty}<br>
+          <strong>Năm:</strong> ${exam.year}
+        </div>
+        <button class="detail-btn" onclick="showExamDetails(${exam.id})">Xem Chi Tiết</button>
+      `;
+
+      savedExamsList.appendChild(examItem);
+    });
+  }
+
+  // Hiển thị modal
+  modal.style.display = "flex";
+}
+
+function closeSavedExamsModal() {
+  const modal = document.getElementById("savedExamsModal");
+  modal.style.display = "none";
+}
+
+
+// Lấy danh sách yêu thích từ LocalStorage (hoặc mảng trống nếu chưa có)
+const bookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
+
+// Hiển thị danh sách đề thi với trạng thái yêu thích
+// Lưu đánh giá vào LocalStorage
+const ratings = JSON.parse(localStorage.getItem("ratings")) || {};
+
+// Hàm đánh giá đề thi
+function rateExam(id, rating) {
+  if (!ratings[id]) ratings[id] = [];
+  ratings[id].push(rating);
+
+  // Lưu lại vào LocalStorage
+  localStorage.setItem("ratings", JSON.stringify(ratings));
+
+  // Cập nhật giao diện
+  displayExams();
+}
+
+// Tính điểm trung bình
+function calculateAverageRating(id) {
+  if (!ratings[id] || ratings[id].length === 0) return 0;
+  const total = ratings[id].reduce((sum, rate) => sum + rate, 0);
+  return total / ratings[id].length;
+}
+function shareExam(id) {
+  const exam = exams.find((e) => e.id === id);
+  const shareData = {
+    title: exam.title,
+    text: `Xem đề thi ${exam.title} từ ${exam.school}`,
+    url: exam.pdfUrl, // URL chia sẻ (PDF hoặc liên kết chi tiết)
+  };
+
+  if (navigator.share) {
+    navigator.share(shareData)
+      .then(() => console.log('Chia sẻ thành công!'))
+      .catch((error) => console.log('Lỗi khi chia sẻ:', error));
+  } else {
+    // Sao chép liên kết nếu Web Share API không được hỗ trợ
+    navigator.clipboard.writeText(shareData.url);
+    alert("Đã sao chép liên kết!");
+  }
+}
+function openFileUpload(id) {
+  const modal = document.createElement("div");
+  modal.classList.add("modal");
+
+  modal.innerHTML = `
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2>Làm Đề Thi Thử</h2>
+      <p>Vui lòng tải lên ảnh hoặc file đề thi của bạn để AI kiểm tra:</p>
+      <input type="file" id="fileInput" accept="image/*, .pdf">
+      <button class="button" onclick="submitQuiz(${id})">Nộp Bài</button>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+}
+function submitQuiz(id) {
+  const fileInput = document.getElementById("fileInput");
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("Vui lòng tải lên file!");
+    return;
+  }
+
+  // Hiển thị thông báo chờ trong modal
+  const modalContent = document.querySelector(".modal-content");
+  modalContent.innerHTML = `
+    <h2>Đang xử lý...</h2>
+    <p>Bạn chờ trong 1 phút để AI có câu trả lời.</p>
+    <div class="loading-spinner"></div>
+  `;
+
+  // Giả lập thời gian xử lý (1 phút)
+  setTimeout(() => {
+    modalContent.innerHTML = `
+      <h2>Kết Quả Từ AI</h2>
+      <p><strong>Lời giải:</strong></p>
+      <ul>
+        <li>Câu 1: Đáp án đúng là <strong>A</strong>.</li>
+        <li>Câu 2: Đáp án đúng là <strong>B</strong>.</li>
+        <li>Câu 3: Đáp án đúng là <strong>C</strong>.</li>
+      </ul>
+      <button class="button" onclick="closeModal()">Đóng</button>
+    `;
+  }, 2000); // 60 giây
+}
+
+// Cập nhật giao diện hiển thị danh sách đề thi
+function displayExams(filteredExams = exams) {
+  const examList = document.getElementById("exam-list");
+  examList.innerHTML = ""; // Xóa danh sách trước khi hiển thị
+
+  filteredExams.forEach((exam) => {
+    const isBookmarked = bookmarks.some((b) => b.id === exam.id); // Kiểm tra trạng thái yêu thích
+
+    const averageRating = calculateAverageRating(exam.id);
+
+    const examItem = document.createElement("div");
+    examItem.classList.add("exam-item");
+
+    examItem.innerHTML = `
+      <div class="exam-title">${exam.title}</div>
+      <div class="exam-info">
+        <strong>Trường:</strong> ${exam.school} <br>
+        <strong>Khoa:</strong> ${exam.faculty}
+      </div>
+      <div class="exam-meta">
+        <span><i class="fas fa-calendar-alt"></i> Năm: ${exam.year}</span>
+        <span><i class="fas fa-eye"></i> Lượt xem: ${exam.views}</span>
+      </div>
+      
+      <div class="action-buttons">
+        <a href="${exam.imageUrl}" target="_blank" class="view-img" onclick="incrementViews(${exam.id})">Xem ảnh</a>
+        <a href="${exam.pdfUrl}" target="_blank" class="view-pdf" onclick="incrementViews(${exam.id})">Xem PDF</a>
+        <button class="bookmark" onclick="toggleBookmark(${exam.id})">
+          ${isBookmarked ? "❤️ Đã lưu" : "💖 Yêu thích"}
+        </button>
+        <button class="share-btn" onclick="shareExam(${exam.id})">Chia sẻ</button>
+        
+        <button class="detail-btn" onclick="showExamDetails(${exam.id})">Xem Chi Tiết</button>
+  <button class="quiz-btn" onclick="openFileUpload(${exam.id})">Làm Đề Thi Thử</button>
+
+      </div>
+      <div class="rating">
+        <span onclick="rateExam(${exam.id}, 1)">&#9733;</span>
+        <span onclick="rateExam(${exam.id}, 2)">&#9733;</span>
+        <span onclick="rateExam(${exam.id}, 3)">&#9733;</span>
+        <span onclick="rateExam(${exam.id}, 4)">&#9733;</span>
+        <span onclick="rateExam(${exam.id}, 5)">&#9733;</span>
+        <span class="average-rating" id="rating-${exam.id}">(${averageRating.toFixed(1)})</span>
+      </div>
+      <div class="exam-slogan">
+    <p>Hãy tôn trọng bản quyền đề thi. Không sao chép, không scan!</p>
+  </div>
+    `;
+
+    examList.appendChild(examItem);
+  });
+}
+function toggleBookmark(id) {
+  const exam = exams.find((e) => e.id === id);
+  const index = bookmarks.findIndex((b) => b.id === id);
+
+  if (index === -1) {
+    bookmarks.push(exam); // Thêm vào danh sách yêu thích
+    alert("Đã lưu đề thi!");
+  } else {
+    bookmarks.splice(index, 1); // Xóa khỏi danh sách yêu thích
+    alert("Đã xóa đề thi khỏi danh sách lưu!");
+  }
+
+  // Lưu danh sách yêu thích vào LocalStorage
+  localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+
+  // Cập nhật giao diện
+  displayExams();
+}
+function incrementViews(id) {
+  // Tìm đề thi theo ID
+  const exam = exams.find((e) => e.id === id);
+  if (!exam) return;
+
+  // Tăng lượt xem và cập nhật giao diện
+  exam.views += 1;
+  displayExams(); // Cập nhật lại danh sách hiển thị
+}
+
+
+// Lọc danh sách theo từ khóa và các tiêu chí
+function filterExams() {
+  const searchValue = document.getElementById("search").value.toLowerCase();
+  const selectedSchool = document.getElementById("school").value;
+  const selectedFaculty = document.getElementById("faculty").value;
+  const selectedYear = document.getElementById("year").value;
+
+  const filteredExams = exams.filter((exam) => {
+    const matchesSearch = exam.title.toLowerCase().includes(searchValue);
+    const matchesSchool = !selectedSchool || exam.school === selectedSchool;
+    const matchesFaculty = !selectedFaculty || exam.faculty === selectedFaculty;
+    const matchesYear = !selectedYear || exam.year.toString() === selectedYear;
+
+    return matchesSearch && matchesSchool && matchesFaculty && matchesYear;
+  });
+
+  displayExams(filteredExams);
+}
+
+// Hiển thị danh sách ban đầu
+displayExams();
+
+  </script>
+
+</body>
+</html>
